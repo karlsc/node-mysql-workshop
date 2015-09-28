@@ -19,15 +19,22 @@ connection.queryAsync("SELECT * FROM Account LIMIT 10;").then(
     }
 ).map( function(arrayAccounts){
     
-    if(arrayAccounts.id < 10){
+    return {id: arrayAccounts.id, email: arrayAccounts.email};
+
+}).then( function(formatArray){
     
-        console.log(("  #"+arrayAccounts.id+": ") .bold +arrayAccounts.email);
-    } else if (arrayAccounts.id < 100){
+    for(var j = 0 ; j < formatArray.length ; j++){
         
-        console.log((" #"+arrayAccounts.id+": ") .bold +arrayAccounts.email);
-    } else {
+        if(formatArray[j].id < 10){
         
-        console.log(("#"+arrayAccounts.id+": ") .bold +arrayAccounts.email);
+            console.log(("  #"+formatArray[j].id+": ") .bold +formatArray[j].email);
+        } else if (formatArray[j].id < 100){
+            
+            console.log((" #"+formatArray[j].id+": ") .bold +formatArray[j].email);
+        } else {
+            
+            console.log(("#"+formatArray[j].id+": ") .bold +formatArray[j].email);
+        }
     }
 }).finally(
     function() {
