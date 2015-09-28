@@ -48,7 +48,7 @@ connection.queryAsync("SHOW DATABASES;").then(
                 console.log(dbAndTables.databaseName.bold + ": ");
                 
                 dbAndTables.tableNames.forEach(function(tableName) {
-                    console.log("\t" + tableName.bgWhite.black);
+                    console.log("\t" + tableName.blue);
                 });
                 
             } else {
