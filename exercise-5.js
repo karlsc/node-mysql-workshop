@@ -17,11 +17,7 @@ connection.queryAsync("SELECT * FROM Account LIMIT 10;").then(
         
     	return results[0];
     }
-).map( function(arrayAccounts){
-    
-    return {id: arrayAccounts.id, email: arrayAccounts.email};
-
-}).map( function(formatArray){
+).map( function(formatArray){
     
     return connection.queryAsync("SELECT * FROM AddressBook WHERE accountId = "+formatArray.id+";").then(
         
