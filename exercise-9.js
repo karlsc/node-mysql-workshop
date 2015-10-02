@@ -13,9 +13,9 @@ var connection = mysql.createConnection({
   database : 'addressbook'
 });
 
-var offsetValue = 0;
 
-function pagination(){
+
+function pagination(offsetValue){
 
 connection.queryAsync("SELECT * FROM Account LIMIT 10 OFFSET "+offsetValue).then(
     function(results) {
@@ -38,8 +38,7 @@ connection.queryAsync("SELECT * FROM Account LIMIT 10 OFFSET "+offsetValue).then
                    end();
                } else {
                    
-                   offsetValue += 10;
-               return pagination();
+               return pagination(offsetValue+10);
                }
                 
             } else if(response["See next 10 entries? (Y/n)"] === "N" || response["See next 10 entries? (Y/n)"] === "n"){
@@ -57,4 +56,4 @@ function end() {
         connection.end();
 }
 
-pagination();
+pagination(0);
