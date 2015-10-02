@@ -13,62 +13,48 @@ var connection = mysql.createConnection({
   database : 'addressbook'
 });
 
-connection.queryAsync("SELECT * FROM Account").then(
+var offsetValue = 0;
+
+function pagination(){
+
+connection.queryAsync("SELECT * FROM Account LIMIT 10 OFFSET "+offsetValue).then(
     function(results) {
         
     	var formatResults = results[0];
     	
-    	for(var j = 0 ; j < formatResults.length/10 ; j++){
-    	    
-    	    
+    	for(var i = 0 ; i < 10 ; i++){
+        	    
+            console.log("ID #"+formatResults[i].id+" | Email: "+formatResults[i].email+" | Password: "+formatResults[i].password+" | Created on: "+formatResults[i].createdOn);
+        }
     	
-    	}
-    	
-    	
-    	
-    	var idAt = 0;
-    	var idToGo = 10;
-    	
-    	for(var j = 0 ; j < formatResults.length/10 ; j++){
-    	
-    	
-    	for(var i = idAt ; i < idToGo ; i++){
-    	    
-    	    console.log("ID #"+formatResults[i].id+" | Email: "+formatResults[i].email+" | Password: "+formatResults[i].password+" | Created on: "+formatResults[i].createdOn);
-    	}
-    	
-    	prompt.getAsync(["See next 10 entries? (Y/n)"]).then( test()
-    	    
-    	   // function(response) {
-            
-        //     if(response["See next 10 entries? (Y/n)"] === "Y" || response["See next 10 entries? (Y/n)"] === "y"){
+        return prompt.getAsync(["See next 10 entries? (Y/n)"]);
+        
+        }).then( function(response) {
+        	    
+            if(response["See next 10 entries? (Y/n)"] === "Y" || response["See next 10 entries? (Y/n)"] === "y"){
                 
-        //         idAt = idAt +10;
-        //         idToGo = idToGo +10;
+               if(offsetValue >= 990){
+                   
+                   end();
+               } else {
+                   
+                   offsetValue += 10;
+               return pagination();
+               }
                 
+            } else if(response["See next 10 entries? (Y/n)"] === "N" || response["See next 10 entries? (Y/n)"] === "n"){
                 
-        //     } else if(response["See next 10 entries? (Y/n)"] === "N" || response["See next 10 entries? (Y/n)"] === "n"){
+                return;
+            } else {
                 
-        //         return;
-        //     } else {
-                
-        //         console.log("Wrong selection.");
-        //         return;
-        //     }
-        // }
-        );
-    	
-    	
-    	}
-    	
-    	
-}).finally(
-    function() {
-        connection.end();
-    }
-);
-
-
-function test(){
-    console.log("test");
+                console.log("Wrong selection.");
+                return;
+            }
+        });
 }
+
+function end() {
+        connection.end();
+}
+
+pagination();
