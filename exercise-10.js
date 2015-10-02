@@ -41,6 +41,9 @@ function createAccount(email,password){
         connection.queryAsync("SELECT LAST_INSERT_ID()").then(function(result){
         
             console.log("Your account was succesfuly created.\nAccount ID #"+result[0][0]['LAST_INSERT_ID()']+"\nAccount name: "+email+"\nAccount password: "+password);
+            console.log(result.insertId);
+            console.log(result[0].insertId);
+            console.log(result[0][0].insertId);
             return end();
         });
     });
